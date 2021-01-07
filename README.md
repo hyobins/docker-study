@@ -36,7 +36,7 @@ docker run -it centos:latest bash
 <br><br>
 >## 직접 이미지 빌드하기
 
-1. Dockerfile 작성(예시)
+>1. Dockerfile 작성(예시)
 
 ```bash
 FROM ubuntu:16.04
@@ -48,7 +48,7 @@ COPY index.html /var/www/html/
 CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
 ```
 
-2. Dockerfile을 이미지로 제작하기위해 Docker Build 진행
+>2. Dockerfile을 이미지로 제작하기위해 Docker Build 진행
 
 ```bash
 docker build <옵션> <Dockerfile (있는)위치>
@@ -85,6 +85,7 @@ $ docker rm $(docker ps -a -q)
 ```
 
 <br><br>
+
 >## Dockerfile
 이미지를 직접 빌드하는 스크립트가 기재된 파일로서, 다음과 같은 내용을 담고있다.<br>
 1. 베이스 이미지의 repository
@@ -93,6 +94,7 @@ $ docker rm $(docker ps -a -q)
 4. 컨테이너 기동 시 실행될 명령어
 
 <br>
+
 ### Dockerfile 작성
 Exmaple
 
@@ -120,10 +122,27 @@ RUN : (이 위치에서) test1.go build를 통해 test1 이란 이름의 exe 바
 ENTRYPOINT : 컨테이너 실행과 동시에 명령어 실행
 
 <br>
+
 ## Dockerfile build 후 실행
 
 ```bash
 $ docker build -t d3 .
 $ docker run -it -p8888:1322 --name test01 d3 /bin/sh
 ```
+<br><br>
 
+위 내용을 shell script 이용하여 편리하게 실행할 수도 있다.<br>
+>run_my_docker.sh파일 작성
+
+```bash
+docker stop hb-container
+docker rm hb-container
+docker build -t hb/image .
+docker run -it -p:8888:{주소} --name hb-container hb/image /bin/sh
+```
+
+>실행
+
+```bash
+sh run_my_docker.sh
+```
