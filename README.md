@@ -146,3 +146,60 @@ docker run -it -p:8888:{주소} --name hb-container hb/image /bin/sh
 ```bash
 sh run_my_docker.sh
 ```
+
+```bash
+[hb0617@k8s-dev test]$ sh run_my_docker.sh
+hb-container
+hb-container
+Sending build context to Docker daemon  10.24kB
+Step 1/7 : FROM golang:alpine as builder
+ ---> 1463476d8605
+Step 2/7 : WORKDIR /workspace/test
+ ---> Using cache
+ ---> 372938087652
+Step 3/7 : COPY . .
+ ---> da837dd7def5
+Step 4/7 : RUN go get -d -v
+ ---> Running in 5248577d4c68
+go: downloading github.com/labstack/echo v3.3.10+incompatible
+go: downloading github.com/labstack/gommon v0.3.0
+go: downloading golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
+go: downloading github.com/dgrijalva/jwt-go v3.2.0+incompatible
+go: downloading github.com/valyala/fasttemplate v1.0.1
+go: downloading github.com/mattn/go-colorable v0.1.2
+go: downloading github.com/mattn/go-isatty v0.0.9
+go: downloading github.com/valyala/bytebufferpool v1.0.0
+go: downloading golang.org/x/sys v0.0.0-20191026070338-33540a1f6037
+go: downloading golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
+go: downloading golang.org/x/text v0.3.0
+Removing intermediate container 5248577d4c68
+ ---> 50cab91af847
+Step 5/7 : RUN go build -o test1 test1.go
+ ---> Running in d70e3b16e2b0
+Removing intermediate container d70e3b16e2b0
+ ---> 6edb127ed083
+Step 6/7 : ENTRYPOINT ["/workspace/test/test1"]
+ ---> Running in ad083a649d64
+Removing intermediate container ad083a649d64
+ ---> dccc62b63c21
+Step 7/7 : CMD ["/workspace/test/test1"]
+ ---> Running in f930476d6d23
+Removing intermediate container f930476d6d23
+ ---> 2e2a103a4daf
+Successfully built 2e2a103a4daf
+Successfully tagged hb/image:latest
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v3.3.10-dev
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:1322
+^C[hb0617@k8s-dev test]$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+10f3511a0914        hb-image            "/workspace/test/tes…"   9 seconds ago       Up 8 seconds        0.0.0.0:8888->1322/tcp   hb-container
+[hb0617@k8s-dev test]$ docker attach 10f3511a0914
+```
